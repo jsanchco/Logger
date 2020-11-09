@@ -24,9 +24,6 @@ namespace Persistence.MongoDB.Repository
 
         public async Task<IEnumerable<Logger>> GetAll(FilterLogger filter, CancellationToken cancellationToken)
         {
-            //var filterDefinition = new FilterDefinition<Logger>();
-            //filterDefinition.
-
             return await _context.Loggers
                 .Find(x => (filter.Start == null || x.Timestamp >= filter.Start) &&
                            (filter.End == null || x.Timestamp <= filter.End))
