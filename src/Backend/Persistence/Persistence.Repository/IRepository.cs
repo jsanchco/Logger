@@ -9,7 +9,7 @@ namespace Persistence.Repository
         Task<TEntity> GetById(string id, CancellationToken cancellationToken);
         Task<IEnumerable<TEntity>> GetAll(TFilter filter, CancellationToken cancellationToken);
         Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken);
-        Task AddManyAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
+        Task AddManyAsync(List<TEntity> entities, CancellationToken cancellationToken);
         Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken);
     }
 }

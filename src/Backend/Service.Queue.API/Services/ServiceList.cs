@@ -7,6 +7,7 @@ namespace Service.Queue.API.Services
         void Add(T item);
         int Count();
         List<T> GetItems();
+        void RemoveAllItems();
     }
 
     public class ServiceList<T> : IServiceList<T> where T: class, new()
@@ -31,6 +32,11 @@ namespace Service.Queue.API.Services
         public List<T> GetItems()
         {
             return _listItems;
+        }
+
+        public void RemoveAllItems()
+        {
+            _listItems.Clear();
         }
     }
 }
