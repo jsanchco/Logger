@@ -41,5 +41,10 @@ namespace Persistence.MongoDB.Repository
         {
             throw new System.NotImplementedException();
         }
+
+        public async Task AddManyAsync(IEnumerable<Logger> entities, CancellationToken cancellationToken)
+        {
+            await _context.Loggers.InsertManyAsync(entities);
+        }
     }
 }
