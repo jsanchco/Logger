@@ -50,15 +50,10 @@ namespace Service.Queue.API.Services
 
             if (_serviceList.Count() > 0)
             {
-                _mediator.Send(new CreateLoggerCommand
+                _mediator.Send(new CreateManyLoggerCommand
                 {
-                    Logger = _serviceList.GetItems()[0]
+                    Loggers = _serviceList.GetItems()
                 });
-
-                //_mediator.Send(new CreateManyLoggerCommand
-                //{
-                //    Loggers = _serviceList.GetItems()
-                //});
                 _serviceList.RemoveAllItems();
             }
         }

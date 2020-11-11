@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Service.Command
 {
-    public class CreateManyLoggerCommandHandler : IRequestHandler<CreateManyLoggerCommand>
+    public class CreateManyLoggerCommandHandler : IRequestHandler<CreateManyLoggerCommand, int>
     {
         private readonly IRepository<Logger, FilterLogger> _repositoryLogger;
 
@@ -16,11 +16,11 @@ namespace Persistence.Service.Command
             _repositoryLogger = repositoryLogger;
         }
 
-        public async Task<Unit> Handle(CreateManyLoggerCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateManyLoggerCommand request, CancellationToken cancellationToken)
         {
             await _repositoryLogger.AddManyAsync(request.Loggers, cancellationToken);
 
-            return Unit.Value;
+            return request.Loggers.Count;
         }
     }
 }

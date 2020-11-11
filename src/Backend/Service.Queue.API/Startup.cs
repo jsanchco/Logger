@@ -68,6 +68,7 @@ namespace Service.Queue.API
             services.AddTransient<IRepository<Logger, FilterLogger>, RepositoryLogger>();
 
             services.AddTransient<IRequestHandler<CreateLoggerCommand, Logger>, CreateLoggerCommandHandler>();
+            services.AddTransient<IRequestHandler<CreateManyLoggerCommand, int>, CreateManyLoggerCommandHandler>();
             services.AddTransient<IRequestHandler<GetLoggerByIdQuery, Logger>, GetLoggerByIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetLoggerByFilterQuery, IEnumerable<Logger>>, GetLoggerByFilterQueryHandler>();
 

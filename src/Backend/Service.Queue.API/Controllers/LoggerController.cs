@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Persistence.Service.Command;
 using Persistence.Service.Query;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Service.Queue.API.Controllers
@@ -57,6 +58,25 @@ namespace Service.Queue.API.Controllers
                 {
                     Logger = logger
                 }));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("addmany")]
+        public async Task<IActionResult> AddMany([FromBody] List<Logger> loggers)
+        {
+            try
+            {
+                await _mediator.Send(new CreateManyLoggerCommand
+                {
+                    Loggers = loggers
+                });
+
+                return Ok();
             }
             catch (Exception ex)
             {
