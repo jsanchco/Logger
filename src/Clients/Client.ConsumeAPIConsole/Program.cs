@@ -22,6 +22,8 @@ namespace Client.ConsumeAPIConsole
 
             var cont = 1;
             var random = new Random();
+            var start = DateTime.Now;
+            var sentItems = 0;
             do
             {
                 while (!Console.KeyAvailable)
@@ -40,9 +42,22 @@ namespace Client.ConsumeAPIConsole
                     var httpContent = new StringContent(requestSerialize, Encoding.UTF8, "application/json");
                     var response = await client.PostAsync(url, httpContent);
                     if (!response.IsSuccessStatusCode)
+                    {
                         await logger.WriteLogger($"Error in PostAsync [{cont}]", LogEventLevel.ERR);
+                    }
+                    else
+                    {
+                        cont++;
+                        sentItems++;
 
-                    cont++;
+                        var now = DateTime.Now;
+                        if ((now - start).Seconds == 10)
+                        {
+                            await logger.WriteLogger($"Sent Items: {sentItems}");
+                            start = DateTime.Now;
+                            sentItems = 0;
+                        }
+                    }
                 }
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
         }
