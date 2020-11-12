@@ -24,6 +24,9 @@ namespace Client.ConsumeAPIConsole
             var random = new Random();
             var start = DateTime.Now;
             var sentItems = 0;
+
+            Console.WriteLine("Press Esc key to stop ...");
+            Console.WriteLine("");
             do
             {
                 while (!Console.KeyAvailable)
@@ -60,6 +63,9 @@ namespace Client.ConsumeAPIConsole
                     }
                 }
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+
+            Console.WriteLine("Press any key to exit ...");
+            Console.ReadKey();
         }
 
         #region Add appSettings.json
