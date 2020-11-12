@@ -1,26 +1,28 @@
 ﻿using Common.Domain.Entities;
+using Common.Pagination;
 using MediatR;
 using Persistence.Repository;
 using Persistence.Repository.Filters;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Persistence.Service.Query
 {
-    public class GetLoggerByFilterQueryHandler : IRequestHandler<GetLoggerByFilterQuery, IEnumerable<Logger>>
+    public class GetLoggerByFilterQueryHandler : IRequestHandler<GetLoggerByFilterQuery, DataCollection<Logger>>
     {
-        private readonly IRepository<Logger, FilterLogger> _repositoryLogger;
+        private readonly IRepositoryQuery<Logger, FilterLogger> _repository;
 
-        public GetLoggerByFilterQueryHandler(IRepository<Logger, FilterLogger> repositoryLogger)
+        public GetLoggerByFilterQueryHandler(IRepositoryQuery<Logger, FilterLogger> repository)
         {
-            _repositoryLogger = repositoryLogger;
+            _repository = repository;
         }
 
-        public async Task<IEnumerable<Logger>> Handle(GetLoggerByFilterQuery request, CancellationToken cancellationToken)
+        public async Task<DataCollection<Logger>> Handle(GetLoggerByFilterQuery request, CancellationToken cancellationToken)
         {
-            return await _repositoryLogger.GetAll(new FilterLogger
+            return await _repository.GetAll(new FilterLogger
                 {
+                    Page = request.Page,
+                    Take = request.Take,
                     Start = request.Start,
                     End = request.End
                 }, 

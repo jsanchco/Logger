@@ -1,5 +1,6 @@
 using Common.Domain.Entities;
 using Common.Logging;
+using Common.Pagination;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -19,7 +20,6 @@ using Persistence.Repository.Filters;
 using Persistence.Service.Command;
 using Persistence.Service.Query;
 using Service.Queue.API.Services;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Service.Queue.API
@@ -65,12 +65,13 @@ namespace Service.Queue.API
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddTransient<IRepository<Logger, FilterLogger>, RepositoryLogger>();
+            services.AddTransient<IRepositoryQuery<Logger, FilterLogger>, RepositoryQuery>();
+            services.AddTransient<IRepositoryCommand<Logger>, RepositoryCommand>();
 
             services.AddTransient<IRequestHandler<CreateLoggerCommand, Logger>, CreateLoggerCommandHandler>();
             services.AddTransient<IRequestHandler<CreateManyLoggerCommand, int>, CreateManyLoggerCommandHandler>();
             services.AddTransient<IRequestHandler<GetLoggerByIdQuery, Logger>, GetLoggerByIdQueryHandler>();
-            services.AddTransient<IRequestHandler<GetLoggerByFilterQuery, IEnumerable<Logger>>, GetLoggerByFilterQueryHandler>();
+            services.AddTransient<IRequestHandler<GetLoggerByFilterQuery, DataCollection<Logger>>, GetLoggerByFilterQueryHandler>();
 
             services.AddSwaggerGen(s =>
             {

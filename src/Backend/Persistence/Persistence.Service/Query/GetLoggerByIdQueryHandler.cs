@@ -9,16 +9,16 @@ namespace Persistence.Service.Query
 {
     public class GetLoggerByIdQueryHandler : IRequestHandler<GetLoggerByIdQuery, Logger>
     {
-        private readonly IRepository<Logger, FilterLogger> _repositoryLogger;
+        private readonly IRepositoryQuery<Logger, FilterLogger> _repository;
 
-        public GetLoggerByIdQueryHandler(IRepository<Logger, FilterLogger> repositoryLogger)
+        public GetLoggerByIdQueryHandler(IRepositoryQuery<Logger, FilterLogger> repository)
         {
-            _repositoryLogger = repositoryLogger;
+            _repository = repository;
         }
 
         public async Task<Logger> Handle(GetLoggerByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _repositoryLogger.GetById(request.Id, cancellationToken);
+            return await _repository.GetById(request.Id, cancellationToken);
         }
     }
 }

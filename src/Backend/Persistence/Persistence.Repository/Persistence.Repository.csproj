@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Common.Pagination\Common.Pagination.csproj" />
     <ProjectReference Include="..\..\..\Common\Common.Domain\Common.Domain.csproj" />
   </ItemGroup>
 
