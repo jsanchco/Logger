@@ -1,6 +1,4 @@
-﻿using Common.Domain.Entities;
-using Common.Pagination;
-using System.Collections.Generic;
+﻿using Common.Pagination;
 using System.Threading;
 using System.Threading.Tasks;
 
