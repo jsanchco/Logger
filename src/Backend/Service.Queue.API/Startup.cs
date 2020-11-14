@@ -19,7 +19,7 @@ using Persistence.Repository;
 using Persistence.Repository.Filters;
 using Persistence.Service.Command;
 using Persistence.Service.Query;
-using Service.Queue.API.Services;
+using ServiceList;
 using System.Reflection;
 
 namespace Service.Queue.API

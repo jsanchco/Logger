@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Threading.Tasks;
 
@@ -20,8 +21,13 @@ namespace Common.Pagination
 
             var result = new DataCollection<T>
             {
-                Items = await query.Skip(page).Limit(take).ToListAsync(),
                 Total = await query.CountDocumentsAsync(),
+                Items = await query
+                    .Sort(new SortDefinitionBuilder<T>()
+                    .Ascending("Timestamp"))
+                    .Skip(page)
+                    .Limit(take)
+                    .ToListAsync(),               
                 Page = originalPages
             };
 

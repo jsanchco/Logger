@@ -29,6 +29,7 @@ namespace Client.ConsumeAPIConsole
             Console.WriteLine("");
             do
             {
+                //while (!Console.KeyAvailable && cont < 10001)
                 while (!Console.KeyAvailable)
                 {
                     var url = "http://localhost:7000/api/v1/Queue";
@@ -39,7 +40,8 @@ namespace Client.ConsumeAPIConsole
                         new Request
                         {
                             Information = $"Logger Nº {cont}",
-                            Lebel = random.Next(1, 4)
+                            Lebel = random.Next(1, 4),
+                            Timestamp = DateTime.Now
                         });
 
                     var httpContent = new StringContent(requestSerialize, Encoding.UTF8, "application/json");
@@ -62,8 +64,17 @@ namespace Client.ConsumeAPIConsole
                         }
                     }
                 }
+
+                //Console.WriteLine("");
+                //Console.WriteLine("Sent 10000 items");
+                //Console.WriteLine("");               
+                //Console.WriteLine("Press any key to exit ...");
+                //Console.ReadKey();
+                //Environment.Exit(0);
+
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
+            Console.WriteLine("");
             Console.WriteLine("Press any key to exit ...");
             Console.ReadKey();
         }

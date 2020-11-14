@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Service.Queue.API.Services
+namespace ServiceList
 {
     public interface IServiceList<T>
     {
@@ -10,7 +10,7 @@ namespace Service.Queue.API.Services
         void RemoveAllItems();
     }
 
-    public class ServiceList<T> : IServiceList<T> where T: class, new()
+    public class ServiceList<T> : IServiceList<T> where T : class, new()
     {
         private readonly List<T> _listItems;
 

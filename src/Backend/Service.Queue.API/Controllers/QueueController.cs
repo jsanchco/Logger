@@ -1,6 +1,6 @@
 ﻿using Common.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Service.Queue.API.Services;
+using ServiceList;
 
 namespace Service.Queue.API.Controllers
 {

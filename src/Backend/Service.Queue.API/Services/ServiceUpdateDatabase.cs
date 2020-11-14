@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Persistence.Service.Command;
+using ServiceList;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,7 +55,6 @@ namespace Service.Queue.API.Services
                 {
                     Loggers = _serviceList.GetItems()
                 });
-                _serviceList.RemoveAllItems();
             }
         }
 
