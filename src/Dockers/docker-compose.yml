@@ -1,17 +1,25 @@
 version: '3'
 services:
     rabbitmq:
-        image: 'rabbitmq:3-management-alpine'
+        image: 'rabbitmq:3'
         container_name: rabbitmq
-        ports:
-            - '5672:5672'
-            - '15672:15672'
   
-    rabbit1:
+    rabbitmq-web:
         image: 'rabbitmq:3-management'
-        hostname: rabbit1
+        container_name: rabbitmq-web
         ports:
             - '15672:15672'
-            - '5672:5672'
-        labels:
-        NAME: rabbitmq1
+
+    mongodb:
+        image: mongo:3.6.1
+        container_name: mongodb
+        volumes:
+            - mongodb:/data/db
+            - mongodb_config:/data/configdb
+        ports:
+            - 27017:27017
+        command: mongod
+
+volumes:
+  mongodb:
+  mongodb_config:
