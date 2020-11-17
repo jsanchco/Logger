@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>    
-    <ProjectReference Include="..\..\..\ServiceList\ServiceList.csproj" />    
     <ProjectReference Include="..\..\Common\Common.Domain\Common.Domain.csproj" />    
     <ProjectReference Include="..\..\Common\Common.Logging\Common.Logging.csproj" />    
     <ProjectReference Include="..\Persistence\Persistence.MongoDB\Persistence.MongoDB.csproj" />    
-    <ProjectReference Include="..\Persistence\Persistence.Service\Persistence.Service.csproj" />
+    <ProjectReference Include="..\Persistence\Persistence.Service\Persistence.Service.csproj" />    
+    <ProjectReference Include="..\ServiceList\ServiceList.csproj" />
   </ItemGroup>
 
 

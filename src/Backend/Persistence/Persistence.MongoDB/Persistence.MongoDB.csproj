@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Common.Pagination\Common.Pagination.csproj" />
     <ProjectReference Include="..\..\..\Common\Common.Domain\Common.Domain.csproj" />
     <ProjectReference Include="..\Persistence.Repository\Persistence.Repository.csproj" />
   </ItemGroup>
