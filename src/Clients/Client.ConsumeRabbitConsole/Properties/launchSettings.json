@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Client.ConsumeAPIConsole": {
+    "Client.ConsumeRabbitConsole": {
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
