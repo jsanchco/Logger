@@ -43,7 +43,8 @@ namespace Common.EventBus
             {
                 HostName = _rabbitConnectionConfiguration.HostName,
                 UserName = _rabbitConnectionConfiguration.UserName,
-                Password = _rabbitConnectionConfiguration.Password
+                Password = _rabbitConnectionConfiguration.Password,
+                Port = _rabbitConnectionConfiguration.Port
             };
 
             using (var connection = factory.CreateConnection())
@@ -93,6 +94,8 @@ namespace Common.EventBus
                 HostName = _rabbitConnectionConfiguration.HostName,
                 UserName = _rabbitConnectionConfiguration.UserName,
                 Password = _rabbitConnectionConfiguration.Password,
+                Port = _rabbitConnectionConfiguration.Port,
+
                 DispatchConsumersAsync = true
             };
 
