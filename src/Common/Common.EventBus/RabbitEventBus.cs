@@ -1,7 +1,9 @@
 ﻿using Common.EventBus.BusRabbit;
 using Common.EventBus.Commands;
+using Common.EventBus.Configuration;
 using Common.EventBus.Events;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -16,12 +18,20 @@ namespace Common.EventBus
     public class RabbitEventBus : IRabbitEventBus
     {
         private readonly IMediator _mediator;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly RabbitConnectionConfiguration _rabbitConnectionConfiguration;
+
         private readonly Dictionary<string, List<Type>> _handlers;
         private readonly List<Type> _eventTypes;
-
-        public RabbitEventBus(IMediator mediator)
+        
+        public RabbitEventBus(
+            IMediator mediator,
+            IServiceScopeFactory serviceScopeFactory,
+            RabbitConnectionConfiguration rabbitConnectionConfiguration)
         {
             _mediator = mediator;
+            _serviceScopeFactory = serviceScopeFactory;
+            _rabbitConnectionConfiguration = rabbitConnectionConfiguration;
 
             _handlers = new Dictionary<string, List<Type>>();
             _eventTypes = new List<Type>();
@@ -31,7 +41,9 @@ namespace Common.EventBus
         {
             var factory = new ConnectionFactory
             {
-                HostName = "localhost"
+                HostName = _rabbitConnectionConfiguration.HostName,
+                UserName = _rabbitConnectionConfiguration.UserName,
+                Password = _rabbitConnectionConfiguration.Password
             };
 
             using (var connection = factory.CreateConnection())
@@ -78,7 +90,9 @@ namespace Common.EventBus
 
             var factory = new ConnectionFactory
             {
-                HostName = "localhost",
+                HostName = _rabbitConnectionConfiguration.HostName,
+                UserName = _rabbitConnectionConfiguration.UserName,
+                Password = _rabbitConnectionConfiguration.Password,
                 DispatchConsumersAsync = true
             };
 
@@ -102,24 +116,28 @@ namespace Common.EventBus
             {
                 if (_handlers.ContainsKey(eventName))
                 {
-                    var subscriptions = _handlers[eventName];
-                    foreach(var subscription in subscriptions)
+                    using (var scope = _serviceScopeFactory.CreateScope())
                     {
-                        var handler = Activator.CreateInstance(subscription);
-                        if (handler == null)
-                            continue;
+                        var subscriptions = _handlers[eventName];
+                        foreach (var subscription in subscriptions)
+                        {
+                            //var handler = Activator.CreateInstance(subscription);
+                            var handler = scope.ServiceProvider.GetService(subscription);
+                            if (handler == null)
+                                continue;
 
-                        var eventType = _eventTypes.SingleOrDefault(x => x.Name == eventName);
-                        var eventDS = JsonConvert.DeserializeObject(message, eventType);
+                            var eventType = _eventTypes.SingleOrDefault(x => x.Name == eventName);
+                            var eventDS = JsonConvert.DeserializeObject(message, eventType);
 
-                        var concrectType = typeof(IEventHandler<>).MakeGenericType(eventType);
-                        await (Task)concrectType.GetMethod("Handler").Invoke(handler, new object[] { eventDS });
+                            var concrectType = typeof(IEventHandler<>).MakeGenericType(eventType);
+                            await (Task)concrectType.GetMethod("Handler").Invoke(handler, new object[] { eventDS });
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                System.Diagnostics.Debug.WriteLine($"Error -> {ex.Message}");
             }
         }
     }

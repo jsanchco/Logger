@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  loggerapi:
+    image: ${DOCKER_REGISTRY-}loggerapi
+    build:
+      context: .
+      dockerfile: src/Backend/Service.Queue.API/Dockerfile

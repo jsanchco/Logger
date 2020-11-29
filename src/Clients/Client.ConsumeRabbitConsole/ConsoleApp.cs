@@ -1,7 +1,8 @@
 ﻿using Client.ConsumeRabbitConsole.Models;
 using Client.ConsumeRabbitConsole.Services;
+using Common.EventBus.BusRabbit;
+using Common.EventBus.EventQueue;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,15 +16,18 @@ namespace Client.ConsumeRabbitConsole
         private readonly Configuration<AppConfig> _configuration;
         private readonly ILogger<ConsoleApp> _logger;
         private readonly IMediator _mediator;
+        private readonly IRabbitEventBus _eventBus;
 
         public ConsoleApp(
             Configuration<AppConfig> configuration,
             ILogger<ConsoleApp> logger,
-            IMediator mediator)
+            IMediator mediator,
+            IRabbitEventBus eventBus)
         {
             _configuration = configuration;
             _logger = logger;
             _mediator = mediator;
+            _eventBus = eventBus;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -63,6 +67,15 @@ namespace Client.ConsumeRabbitConsole
                 if (cki.Key == ConsoleKey.Enter)
                 {
                     _logger.LogInformation("Send Item ...");
+
+                    var now = DateTime.Now;
+                    _eventBus.Publish(
+                        new LoggerEventQueue
+                        {
+                            CreateDateLogger = now,
+                            Lebel = Lebel.Information,
+                            Information = $"Information in the moment {now:dd/MM/yyyy HH:mm:ss}"
+                        });
                 }
 
             } while (cki.Key != ConsoleKey.Escape);

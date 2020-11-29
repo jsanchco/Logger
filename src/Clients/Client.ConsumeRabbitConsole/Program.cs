@@ -1,5 +1,7 @@
 ﻿using Client.ConsumeRabbitConsole.Models;
 using Client.ConsumeRabbitConsole.Services;
+using Common.EventBus;
+using Common.EventBus.BusRabbit;
 using Common.Logging;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,10 +29,19 @@ namespace Client.ConsumeRabbitConsole
                     services.AddMediatR(Assembly.GetExecutingAssembly());
                     services.AddSingleton<IHostedService, ConsoleApp>();
 
+                    var configuration = new Configuration<AppConfig>();
+                    services.AddSingleton<IRabbitEventBus, RabbitEventBus>(sp =>
+                    {
+                        var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                        return new RabbitEventBus(
+                            sp.GetService<IMediator>(),
+                            scopeFactory,
+                            configuration.Settings.Rabbit);
+                    });
+
                     // Add Papertrail to trace
                     var serviceProvider = services.BuildServiceProvider();
                     var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-                    var configuration = new Configuration<AppConfig>();
                     loggerFactory.AddSyslog(
                         configuration.Settings.Papertrail.host,
                         configuration.Settings.Papertrail.port);

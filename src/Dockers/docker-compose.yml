@@ -1,25 +1,28 @@
 version: '3'
 services:
-    rabbitmq:
-        image: 'rabbitmq:3'
-        container_name: rabbitmq
-  
-    rabbitmq-web:
-        image: 'rabbitmq:3-management'
-        container_name: rabbitmq-web
-        ports:
-            - '15672:15672'
-
     mongodb:
-        image: mongo:3.6.1
+        image: mongo
         container_name: mongodb
         volumes:
             - mongodb:/data/db
             - mongodb_config:/data/configdb
         ports:
             - 27017:27017
-        command: mongod
+
+    mongoclient:
+        image: mongoclient/mongoclient
+        container_name: mongoclient
+        depends_on:
+            - mongodb              
+        environment:
+            - MONGO_URL=mongodb://mongodb
+        volumes:
+            - mongoclient:/data/db
+
+        ports:
+            - '3000:3000'
 
 volumes:
   mongodb:
   mongodb_config:
+  mongoclient:

@@ -1,4 +1,8 @@
 using Common.Domain.Entities;
+using Common.EventBus;
+using Common.EventBus.BusRabbit;
+using Common.EventBus.Configuration;
+using Common.EventBus.EventQueue;
 using Common.Logging;
 using Common.Pagination;
 using HealthChecks.UI.Client;
@@ -19,7 +23,9 @@ using Persistence.Repository;
 using Persistence.Repository.Filters;
 using Persistence.Service.Command;
 using Persistence.Service.Query;
+using Service.Queue.API.BrokerHandler;
 using ServiceList;
+using System;
 using System.Reflection;
 
 namespace Service.Queue.API
@@ -73,6 +79,21 @@ namespace Service.Queue.API
             services.AddTransient<IRequestHandler<GetLoggerByIdQuery, Logger>, GetLoggerByIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetLoggerByFilterQuery, DataCollection<Logger>>, GetLoggerByFilterQueryHandler>();
 
+
+            services.AddSingleton<IRabbitEventBus, RabbitEventBus>(sp =>
+            {
+                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                var rabbitConnectionConfiguration = Configuration.GetSection("Rabbit").Get<RabbitConnectionConfiguration>();
+
+                return new RabbitEventBus(
+                    sp.GetService<IMediator>(),
+                    scopeFactory,
+                    rabbitConnectionConfiguration);
+            });
+            services.AddTransient<RabbitEventLoggerHandler>();
+
+            services.AddTransient<IEventHandler<LoggerEventQueue>, RabbitEventLoggerHandler>();
+
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -116,6 +137,9 @@ namespace Service.Queue.API
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "v1 docs");
                 s.RoutePrefix = string.Empty;
             });
+
+            var eventBus = app.ApplicationServices.GetRequiredService<IRabbitEventBus>();
+            eventBus.Subscribe<LoggerEventQueue, RabbitEventLoggerHandler>();
         }
     }
 }
