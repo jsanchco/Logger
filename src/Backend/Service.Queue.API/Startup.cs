@@ -49,7 +49,8 @@ namespace Service.Queue.API
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            var connectionString = Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>().ConnectionString;
+            var mongodbConnectionString = Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>().ConnectionString;
+            var rabbitConnectionString = Configuration.GetSection("Rabbit").Get<RabbitConnectionConfiguration>().RabbitConnectionString;
             // Health check            
             // - Add NuGet package: AspNetCore.HealthChecks.UI (Version 3.0.9)
             // - Add folder 'healthchecks' to project
@@ -57,9 +58,10 @@ namespace Service.Queue.API
             //adding health check services to container
             services.AddHealthChecks()
                         .AddCheck("loggerapi", () => HealthCheckResult.Healthy())
-                        .AddMongoDb(mongodbConnectionString: connectionString,
+                        .AddMongoDb(mongodbConnectionString: mongodbConnectionString,
                                     name: "mongo",
-                                    failureStatus: HealthStatus.Unhealthy);
+                                    failureStatus: HealthStatus.Unhealthy)
+                        .AddRabbitMQ(rabbitConnectionString: rabbitConnectionString);
 
             services.AddHealthChecksUI();
 
