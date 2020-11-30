@@ -56,7 +56,7 @@ namespace Service.Queue.API
             // - Check UI -> http://localhost:XXXXXX/healthchecks-ui#/healthchecks
             //adding health check services to container
             services.AddHealthChecks()
-                        .AddCheck("self", () => HealthCheckResult.Healthy())
+                        .AddCheck("loggerapi", () => HealthCheckResult.Healthy())
                         .AddMongoDb(mongodbConnectionString: connectionString,
                                     name: "mongo",
                                     failureStatus: HealthStatus.Unhealthy);
