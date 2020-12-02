@@ -32,7 +32,7 @@ namespace Client.ConsumeAPIConsole
                 //while (!Console.KeyAvailable && cont < 10001)
                 while (!Console.KeyAvailable)
                 {
-                    var url = "http://localhost:7000/api/v1/Queue";
+                    var url = cfg.UrlApiQueue;
 
                     var client = new HttpClient();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

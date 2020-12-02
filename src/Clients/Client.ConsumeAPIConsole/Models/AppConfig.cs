@@ -4,5 +4,6 @@
     {
         public string Title { get; set; }
         public string NameLog { get; set; }
+        public string UrlApiQueue { get; set; }
     }
 }
