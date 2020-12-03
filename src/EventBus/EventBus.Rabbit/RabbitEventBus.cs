@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Common
+namespace EventBus.Rabbit
 {
     public class RabbitEventBus : IEventBus
     {
@@ -23,7 +23,7 @@ namespace EventBus.Common
 
         private readonly Dictionary<string, List<Type>> _handlers;
         private readonly List<Type> _eventTypes;
-        
+
         public RabbitEventBus(
             IMediator mediator,
             IServiceScopeFactory serviceScopeFactory,

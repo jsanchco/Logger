@@ -42,6 +42,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03. EventBus", "03. EventBu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Common", "src\EventBus\EventBus.Common\EventBus.Common.csproj", "{07FC43E5-B34B-4190-930B-DB83D4AC179D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.AzureServiceBus", "src\EventBus\EventBus.AzureServiceBus\EventBus.AzureServiceBus.csproj", "{9880CAA7-D3F2-441A-A3A5-FDB9DAC343ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.Rabbit", "src\EventBus\EventBus.Rabbit\EventBus.Rabbit.csproj", "{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +96,14 @@ Global
 		{07FC43E5-B34B-4190-930B-DB83D4AC179D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07FC43E5-B34B-4190-930B-DB83D4AC179D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07FC43E5-B34B-4190-930B-DB83D4AC179D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9880CAA7-D3F2-441A-A3A5-FDB9DAC343ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9880CAA7-D3F2-441A-A3A5-FDB9DAC343ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9880CAA7-D3F2-441A-A3A5-FDB9DAC343ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9880CAA7-D3F2-441A-A3A5-FDB9DAC343ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +122,8 @@ Global
 		{9CD15206-A1D4-4BFF-A068-9D0FF0693186} = {407A71A3-9997-4B14-B1B9-542A4212ABB7}
 		{2A751C4E-ECD3-4AC4-A8F2-10578E9D2F43} = {50B914A0-6CFA-418B-BE14-5E9C2985713F}
 		{07FC43E5-B34B-4190-930B-DB83D4AC179D} = {D788B757-BED1-4186-9999-D09A8C5E3309}
+		{9880CAA7-D3F2-441A-A3A5-FDB9DAC343ED} = {D788B757-BED1-4186-9999-D09A8C5E3309}
+		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51} = {D788B757-BED1-4186-9999-D09A8C5E3309}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {85F137D7-F37F-48F4-B492-6F211165EB03}

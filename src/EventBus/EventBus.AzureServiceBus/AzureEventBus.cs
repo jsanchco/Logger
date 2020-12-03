@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-namespace EventBus.Common
+namespace EventBus.AzureServiceBus
 {
     public class AzureEventBus : IEventBus
     {

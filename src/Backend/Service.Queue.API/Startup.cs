@@ -1,10 +1,10 @@
 using Common.Domain.Entities;
 using Common.Logging;
 using Common.Pagination;
-using EventBus.Common;
 using EventBus.Common.Configuration;
 using EventBus.Common.EventBus;
 using EventBus.Common.ModelsEvents;
+using EventBus.Rabbit;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;

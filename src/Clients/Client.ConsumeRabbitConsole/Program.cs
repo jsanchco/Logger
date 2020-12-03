@@ -1,7 +1,7 @@
 ﻿using Client.ConsumeRabbitConsole.Models;
 using Client.ConsumeRabbitConsole.Services;
 using Common.Logging;
-using EventBus.Common;
+using EventBus.Rabbit;
 using EventBus.Common.EventBus;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

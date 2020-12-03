@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.Logging\Common.Logging.csproj" />
     <ProjectReference Include="..\..\EventBus\EventBus.Common\EventBus.Common.csproj" />
+    <ProjectReference Include="..\..\EventBus\EventBus.Rabbit\EventBus.Rabbit.csproj" />
   </ItemGroup>
 
   <ItemGroup>
