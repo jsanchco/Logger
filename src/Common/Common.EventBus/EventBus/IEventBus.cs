@@ -2,9 +2,9 @@
 using Common.EventBus.Events;
 using System.Threading.Tasks;
 
-namespace Common.EventBus.BusRabbit
+namespace Common.EventBus.EventBus
 {
-    public interface IRabbitEventBus
+    public interface IEventBus
     {
         Task SendCommand<T>(T command) where T : Command;
         void Publish<T>(T @event) where T : Event;

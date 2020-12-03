@@ -1,4 +1,4 @@
-﻿using Common.EventBus.BusRabbit;
+﻿using Common.EventBus.EventBus;
 using Common.EventBus.Commands;
 using Common.EventBus.Configuration;
 using Common.EventBus.Events;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Common.EventBus
 {
-    public class RabbitEventBus : IRabbitEventBus
+    public class RabbitEventBus : IEventBus
     {
         private readonly IMediator _mediator;
         private readonly IServiceScopeFactory _serviceScopeFactory;
@@ -124,7 +124,7 @@ namespace Common.EventBus
                         var subscriptions = _handlers[eventName];
                         foreach (var subscription in subscriptions)
                         {
-                            //var handler = Activator.CreateInstance(subscription);
+
                             var handler = scope.ServiceProvider.GetService(subscription);
                             if (handler == null)
                                 continue;

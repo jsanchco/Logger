@@ -1,7 +1,7 @@
 ﻿using Client.ConsumeRabbitConsole.Models;
 using Client.ConsumeRabbitConsole.Services;
 using Common.EventBus;
-using Common.EventBus.BusRabbit;
+using Common.EventBus.EventBus;
 using Common.Logging;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +30,7 @@ namespace Client.ConsumeRabbitConsole
                     services.AddSingleton<IHostedService, ConsoleApp>();
 
                     var configuration = new Configuration<AppConfig>();
-                    services.AddSingleton<IRabbitEventBus, RabbitEventBus>(sp =>
+                    services.AddSingleton<IEventBus, RabbitEventBus>(sp =>
                     {
                         var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
                         return new RabbitEventBus(

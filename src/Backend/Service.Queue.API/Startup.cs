@@ -1,8 +1,8 @@
 using Common.Domain.Entities;
 using Common.EventBus;
-using Common.EventBus.BusRabbit;
+using Common.EventBus.EventBus;
 using Common.EventBus.Configuration;
-using Common.EventBus.EventQueue;
+using Common.EventBus.ModelsEvents;
 using Common.Logging;
 using Common.Pagination;
 using HealthChecks.UI.Client;
@@ -82,7 +82,7 @@ namespace Service.Queue.API
             services.AddTransient<IRequestHandler<GetLoggerByFilterQuery, DataCollection<Logger>>, GetLoggerByFilterQueryHandler>();
 
 
-            services.AddSingleton<IRabbitEventBus, RabbitEventBus>(sp =>
+            services.AddSingleton<IEventBus, RabbitEventBus>(sp =>
             {
                 var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
                 var rabbitConnectionConfiguration = Configuration.GetSection("Rabbit").Get<RabbitConnectionConfiguration>();
@@ -140,7 +140,7 @@ namespace Service.Queue.API
                 s.RoutePrefix = string.Empty;
             });
 
-            var eventBus = app.ApplicationServices.GetRequiredService<IRabbitEventBus>();
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<LoggerEventQueue, RabbitEventLoggerHandler>();
         }
     }

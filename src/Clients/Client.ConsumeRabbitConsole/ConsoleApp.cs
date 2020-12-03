@@ -1,7 +1,7 @@
 ﻿using Client.ConsumeRabbitConsole.Models;
 using Client.ConsumeRabbitConsole.Services;
-using Common.EventBus.BusRabbit;
-using Common.EventBus.EventQueue;
+using Common.EventBus.EventBus;
+using Common.EventBus.ModelsEvents;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,13 +16,13 @@ namespace Client.ConsumeRabbitConsole
         private readonly Configuration<AppConfig> _configuration;
         private readonly ILogger<ConsoleApp> _logger;
         private readonly IMediator _mediator;
-        private readonly IRabbitEventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
         public ConsoleApp(
             Configuration<AppConfig> configuration,
             ILogger<ConsoleApp> logger,
             IMediator mediator,
-            IRabbitEventBus eventBus)
+            IEventBus eventBus)
         {
             _configuration = configuration;
             _logger = logger;

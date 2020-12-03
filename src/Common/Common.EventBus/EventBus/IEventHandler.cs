@@ -1,7 +1,7 @@
 ﻿using Common.EventBus.Events;
 using System.Threading.Tasks;
 
-namespace Common.EventBus.BusRabbit
+namespace Common.EventBus.EventBus
 {
     public interface IEventHandler<in TEvent> : IEventHandler where TEvent : Event  
     {

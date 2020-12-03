@@ -1,6 +1,6 @@
 ﻿using Common.Domain.Entities;
-using Common.EventBus.BusRabbit;
-using Common.EventBus.EventQueue;
+using Common.EventBus.EventBus;
+using Common.EventBus.ModelsEvents;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Persistence.Service.Command;
