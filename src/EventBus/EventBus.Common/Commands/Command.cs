@@ -1,7 +1,7 @@
-﻿using Common.EventBus.Events;
+﻿using EventBus.Common.Events;
 using System;
 
-namespace Common.EventBus.Commands
+namespace EventBus.Common.Commands
 {
     public abstract class Command : Message
     {

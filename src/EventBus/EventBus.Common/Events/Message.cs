@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Common.EventBus.Events
+namespace EventBus.Common.Events
 {
     public abstract class Message : IRequest<bool>
     {

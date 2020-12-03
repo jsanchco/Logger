@@ -1,6 +1,6 @@
 ﻿using Common.Domain.Entities;
-using Common.EventBus.EventBus;
-using Common.EventBus.ModelsEvents;
+using EventBus.Common.EventBus;
+using EventBus.Common.ModelsEvents;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Persistence.Service.Command;
@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Service.Queue.API.BrokerHandler
 {
-    public class RabbitEventLoggerHandler : IEventHandler<LoggerEventQueue>
+    public class EventLoggerHandler : IEventHandler<LoggerEventQueue>
     {
-        private readonly ILogger<RabbitEventLoggerHandler> _logger;
+        private readonly ILogger<EventLoggerHandler> _logger;
         private readonly IMediator _mediator;
 
-        public RabbitEventLoggerHandler(
-            ILogger<RabbitEventLoggerHandler> logger,
+        public EventLoggerHandler(
+            ILogger<EventLoggerHandler> logger,
             IMediator mediator)
         {
             _logger = logger;

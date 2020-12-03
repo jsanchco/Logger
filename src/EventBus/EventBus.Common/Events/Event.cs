@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.EventBus.Events
+namespace EventBus.Common.Events
 {
     public abstract class Event
     {

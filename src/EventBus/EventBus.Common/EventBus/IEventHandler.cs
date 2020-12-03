@@ -1,7 +1,7 @@
-﻿using Common.EventBus.Events;
+﻿using EventBus.Common.Events;
 using System.Threading.Tasks;
 
-namespace Common.EventBus.EventBus
+namespace EventBus.Common.EventBus
 {
     public interface IEventHandler<in TEvent> : IEventHandler where TEvent : Event  
     {

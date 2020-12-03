@@ -1,8 +1,8 @@
-﻿using Common.EventBus.Commands;
-using Common.EventBus.Events;
+﻿using EventBus.Common.Commands;
+using EventBus.Common.Events;
 using System.Threading.Tasks;
 
-namespace Common.EventBus.EventBus
+namespace EventBus.Common.EventBus
 {
     public interface IEventBus
     {

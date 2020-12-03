@@ -1,7 +1,7 @@
-﻿using Common.EventBus.EventBus;
-using Common.EventBus.Commands;
-using Common.EventBus.Configuration;
-using Common.EventBus.Events;
+﻿using EventBus.Common.Commands;
+using EventBus.Common.Configuration;
+using EventBus.Common.EventBus;
+using EventBus.Common.Events;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.EventBus
+namespace EventBus.Common
 {
     public class RabbitEventBus : IEventBus
     {

@@ -1,7 +1,7 @@
-﻿using Common.EventBus.Events;
+﻿using EventBus.Common.Events;
 using System;
 
-namespace Common.EventBus.ModelsEvents
+namespace EventBus.Common.ModelsEvents
 {
     public class LoggerEventQueue : Event
     {

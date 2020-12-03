@@ -1,23 +1,27 @@
-﻿using Common.EventBus.Commands;
-using Common.EventBus.EventBus;
-using Common.EventBus.Events;
+﻿using EventBus.Common.Commands;
+using EventBus.Common.Configuration;
+using EventBus.Common.EventBus;
+using EventBus.Common.Events;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
-namespace Common.EventBus
+namespace EventBus.Common
 {
     public class AzureEventBus : IEventBus
     {
         private readonly IMediator _mediator;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly AzureServiceBusConnectionConfiguration _azureServiceBusConnectionConfiguration;
 
         public AzureEventBus(
             IMediator mediator,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            AzureServiceBusConnectionConfiguration azureServiceBusConnectionConfiguration)
         {
             _mediator = mediator;
             _serviceScopeFactory = serviceScopeFactory;
+            _azureServiceBusConnectionConfiguration = azureServiceBusConnectionConfiguration;
         }
 
         public void Publish<T>(T @event) where T : Event

@@ -1,4 +1,4 @@
-﻿namespace Common.EventBus.Configuration
+﻿namespace EventBus.Common.Configuration
 {
     public class RabbitConnectionConfiguration
     {

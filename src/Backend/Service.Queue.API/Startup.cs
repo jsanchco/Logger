@@ -1,10 +1,10 @@
 using Common.Domain.Entities;
-using Common.EventBus;
-using Common.EventBus.EventBus;
-using Common.EventBus.Configuration;
-using Common.EventBus.ModelsEvents;
 using Common.Logging;
 using Common.Pagination;
+using EventBus.Common;
+using EventBus.Common.Configuration;
+using EventBus.Common.EventBus;
+using EventBus.Common.ModelsEvents;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -25,7 +25,6 @@ using Persistence.Service.Command;
 using Persistence.Service.Query;
 using Service.Queue.API.BrokerHandler;
 using ServiceList;
-using System;
 using System.Reflection;
 
 namespace Service.Queue.API
@@ -92,9 +91,9 @@ namespace Service.Queue.API
                     scopeFactory,
                     rabbitConnectionConfiguration);
             });
-            services.AddTransient<RabbitEventLoggerHandler>();
+            services.AddTransient<EventLoggerHandler>();
 
-            services.AddTransient<IEventHandler<LoggerEventQueue>, RabbitEventLoggerHandler>();
+            services.AddTransient<IEventHandler<LoggerEventQueue>, EventLoggerHandler>();
 
             services.AddSwaggerGen(s =>
             {
@@ -141,7 +140,7 @@ namespace Service.Queue.API
             });
 
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<LoggerEventQueue, RabbitEventLoggerHandler>();
+            eventBus.Subscribe<LoggerEventQueue, EventLoggerHandler>();
         }
     }
 }

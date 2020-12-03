@@ -24,8 +24,8 @@
 
   <ItemGroup>    
     <ProjectReference Include="..\..\Common\Common.Domain\Common.Domain.csproj" />    
-    <ProjectReference Include="..\..\Common\Common.EventBus\Common.EventBus.csproj" />    
     <ProjectReference Include="..\..\Common\Common.Logging\Common.Logging.csproj" />    
+    <ProjectReference Include="..\..\EventBus\EventBus.Common\EventBus.Common.csproj" />    
     <ProjectReference Include="..\Persistence\Persistence.MongoDB\Persistence.MongoDB.csproj" />    
     <ProjectReference Include="..\Persistence\Persistence.Service\Persistence.Service.csproj" />    
     <ProjectReference Include="..\ServiceList\ServiceList.csproj" />
