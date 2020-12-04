@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.AzureServiceBus", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.Rabbit", "src\EventBus\EventBus.Rabbit\EventBus.Rabbit.csproj", "{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.ConsumeAzureServiceBusConsole", "src\Clients\Client.ConsumeAzureServiceBusConsole\Client.ConsumeAzureServiceBusConsole.csproj", "{877E6293-83D5-4001-82DC-9666231A4BEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{877E6293-83D5-4001-82DC-9666231A4BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{877E6293-83D5-4001-82DC-9666231A4BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{877E6293-83D5-4001-82DC-9666231A4BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{877E6293-83D5-4001-82DC-9666231A4BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{07FC43E5-B34B-4190-930B-DB83D4AC179D} = {D788B757-BED1-4186-9999-D09A8C5E3309}
 		{9880CAA7-D3F2-441A-A3A5-FDB9DAC343ED} = {D788B757-BED1-4186-9999-D09A8C5E3309}
 		{7BE52EC3-FE36-4238-8045-E4FF6CED5A51} = {D788B757-BED1-4186-9999-D09A8C5E3309}
+		{877E6293-83D5-4001-82DC-9666231A4BEC} = {50B914A0-6CFA-418B-BE14-5E9C2985713F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {85F137D7-F37F-48F4-B492-6F211165EB03}

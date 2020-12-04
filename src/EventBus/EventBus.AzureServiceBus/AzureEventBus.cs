@@ -3,7 +3,11 @@ using EventBus.Common.Configuration;
 using EventBus.Common.EventBus;
 using EventBus.Common.Events;
 using MediatR;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EventBus.AzureServiceBus
@@ -26,7 +30,17 @@ namespace EventBus.AzureServiceBus
 
         public void Publish<T>(T @event) where T : Event
         {
-            throw new System.NotImplementedException();
+            var queueClient = new QueueClient(
+                _azureServiceBusConnectionConfiguration.AzureServiceBusConnectionString,
+                _azureServiceBusConnectionConfiguration.NameQueue);
+
+            var json = JsonSerializer.Serialize(@event);
+
+            queueClient.SendAsync(
+                new Microsoft.Azure.ServiceBus.Message(Encoding.UTF8.GetBytes(json))
+            );
+
+            queueClient.CloseAsync();
         }
 
         public Task SendCommand<T>(T command) where T : Command
@@ -38,7 +52,32 @@ namespace EventBus.AzureServiceBus
             where T : Event
             where TH : IEventHandler
         {
-            throw new System.NotImplementedException();
+            var queueClient = new QueueClient(
+                _azureServiceBusConnectionConfiguration.AzureServiceBusConnectionString,
+                _azureServiceBusConnectionConfiguration.NameQueue);
+
+            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            {
+                MaxConcurrentCalls = 1,
+                AutoComplete = false
+            };
+
+            queueClient.RegisterMessageHandler(async (Microsoft.Azure.ServiceBus.Message message, CancellationToken token) => {
+                var payload = JsonSerializer.Deserialize<T>(
+                    Encoding.UTF8.GetString(message.Body)
+                );
+
+                await queueClient.CompleteAsync(message.SystemProperties.LockToken);
+                //await handler.Execute(payload);
+            }, messageHandlerOptions);
+        }
+
+        private static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        {
+            System.Diagnostics.Debug.WriteLine(exceptionReceivedEventArgs.Exception.Message);
+
+            // your custom message log
+            return Task.CompletedTask;
         }
     }
 }
