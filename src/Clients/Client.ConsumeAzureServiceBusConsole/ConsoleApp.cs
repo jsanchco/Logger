@@ -74,7 +74,7 @@ namespace Client.ConsumeAzureServiceBusConsole
                         {
                             CreateDateLogger = now,
                             Lebel = Lebel.Information,
-                            Information = $"Information in the moment {now:dd/MM/yyyy HH:mm:ss}"
+                            Information = $"[FROM AZURE] Information in the moment {now:dd/MM/yyyy HH:mm:ss}"
                         });
                 }
 

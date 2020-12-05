@@ -1,4 +1,4 @@
-﻿using EventBus.Common.Configuration;
+﻿using EventBus.AzureServiceBus.Configuration;
 
 namespace Client.ConsumeAzureServiceBusConsole.Models
 {

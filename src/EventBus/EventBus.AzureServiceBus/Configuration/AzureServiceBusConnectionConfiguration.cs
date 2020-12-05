@@ -1,4 +1,4 @@
-﻿namespace EventBus.Common.Configuration
+﻿namespace EventBus.AzureServiceBus.Configuration
 {
     public class AzureServiceBusConnectionConfiguration
     {
