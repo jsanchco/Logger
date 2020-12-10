@@ -74,7 +74,7 @@ namespace Client.ConsumeRabbitConsole
                         {
                             CreateDateLogger = now,
                             Lebel = Lebel.Information,
-                            Information = $"Information in the moment {now:dd/MM/yyyy HH:mm:ss}"
+                            Information = $"[FROM RABBIT] Information in the moment {now:dd/MM/yyyy HH:mm:ss}"
                         });
                 }
 

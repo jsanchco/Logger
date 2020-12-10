@@ -1,7 +1,7 @@
 ﻿using EventBus.Common.Commands;
-using EventBus.Common.Configuration;
 using EventBus.Common.EventBus;
 using EventBus.Common.Events;
+using EventBus.Rabbit.Configuration;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -124,7 +124,6 @@ namespace EventBus.Rabbit
                         var subscriptions = _handlers[eventName];
                         foreach (var subscription in subscriptions)
                         {
-
                             var handler = scope.ServiceProvider.GetService(subscription);
                             if (handler == null)
                                 continue;

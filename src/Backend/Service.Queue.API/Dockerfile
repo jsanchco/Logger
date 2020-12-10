@@ -15,6 +15,7 @@ COPY ["src/Backend/ServiceList/ServiceList.csproj", "src/Backend/ServiceList/"]
 COPY ["src/Backend/Persistence/Persistence.MongoDB/Persistence.MongoDB.csproj", "src/Backend/Persistence/Persistence.MongoDB/"]
 COPY ["src/Backend/Persistence/Persistence.Repository/Persistence.Repository.csproj", "src/Backend/Persistence/Persistence.Repository/"]
 COPY ["src/Common/Common.Pagination/Common.Pagination.csproj", "src/Common/Common.Pagination/"]
+COPY ["src/EventBus/EventBus.AzureServiceBus/EventBus.AzureServiceBus.csproj", "src/EventBus/EventBus.AzureServiceBus/"]
 COPY ["src/Backend/Persistence/Persistence.Service/Persistence.Service.csproj", "src/Backend/Persistence/Persistence.Service/"]
 RUN dotnet restore "src/Backend/Service.Queue.API/Service.Queue.API.csproj"
 COPY . .

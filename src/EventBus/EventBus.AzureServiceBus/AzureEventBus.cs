@@ -1,10 +1,13 @@
-﻿using EventBus.Common.Commands;
-using EventBus.Common.Configuration;
+﻿using EventBus.AzureServiceBus.Configuration;
+using EventBus.Common.Commands;
 using EventBus.Common.EventBus;
 using EventBus.Common.Events;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -18,6 +21,9 @@ namespace EventBus.AzureServiceBus
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly AzureServiceBusConnectionConfiguration _azureServiceBusConnectionConfiguration;
 
+        private readonly Dictionary<string, List<Type>> _handlers;
+        private readonly List<Type> _eventTypes;
+
         public AzureEventBus(
             IMediator mediator,
             IServiceScopeFactory serviceScopeFactory,
@@ -26,6 +32,9 @@ namespace EventBus.AzureServiceBus
             _mediator = mediator;
             _serviceScopeFactory = serviceScopeFactory;
             _azureServiceBusConnectionConfiguration = azureServiceBusConnectionConfiguration;
+
+            _handlers = new Dictionary<string, List<Type>>();
+            _eventTypes = new List<Type>();
         }
 
         public void Publish<T>(T @event) where T : Event
@@ -52,9 +61,25 @@ namespace EventBus.AzureServiceBus
             where T : Event
             where TH : IEventHandler
         {
-            var queueClient = new QueueClient(
-                _azureServiceBusConnectionConfiguration.AzureServiceBusConnectionString,
-                _azureServiceBusConnectionConfiguration.NameQueue);
+            var eventName = typeof(T).Name;
+            var handlerEventType = typeof(TH);
+
+            if (!_eventTypes.Contains(typeof(T)))
+            {
+                _eventTypes.Add(typeof(T));
+            }
+
+            if (!_handlers.ContainsKey(eventName))
+            {
+                _handlers.Add(eventName, new List<Type>());
+            }
+
+            if (_handlers[eventName].Any(x => x.GetType() == handlerEventType))
+            {
+                throw new ArgumentException($"Handler {handlerEventType} is registred yet by {eventName}");
+            }
+
+            _handlers[eventName].Add(handlerEventType);
 
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
             {
@@ -62,13 +87,31 @@ namespace EventBus.AzureServiceBus
                 AutoComplete = false
             };
 
+            var queueClient = new QueueClient(
+                _azureServiceBusConnectionConfiguration.AzureServiceBusConnectionString,
+                _azureServiceBusConnectionConfiguration.NameQueue);
+
             queueClient.RegisterMessageHandler(async (Microsoft.Azure.ServiceBus.Message message, CancellationToken token) => {
                 var payload = JsonSerializer.Deserialize<T>(
                     Encoding.UTF8.GetString(message.Body)
                 );
 
                 await queueClient.CompleteAsync(message.SystemProperties.LockToken);
-                //await handler.Execute(payload);
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var subscriptions = _handlers[eventName];
+                    foreach (var subscription in subscriptions)
+                    {
+                        var handler = scope.ServiceProvider.GetService(subscription);
+                        if (handler == null)
+                            continue;
+
+                        var eventType = _eventTypes.SingleOrDefault(x => x.Name == eventName);
+
+                        var concrectType = typeof(IEventHandler<>).MakeGenericType(eventType);
+                        await (Task)concrectType.GetMethod("Handler").Invoke(handler, new object[] { payload });
+                    }
+                }
             }, messageHandlerOptions);
         }
 

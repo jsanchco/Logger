@@ -1,10 +1,12 @@
 using Common.Domain.Entities;
 using Common.Logging;
 using Common.Pagination;
-using EventBus.Common.Configuration;
+using EventBus.AzureServiceBus;
+using EventBus.AzureServiceBus.Configuration;
 using EventBus.Common.EventBus;
 using EventBus.Common.ModelsEvents;
 using EventBus.Rabbit;
+using EventBus.Rabbit.Configuration;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -50,6 +52,7 @@ namespace Service.Queue.API
 
             var mongodbConnectionString = Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>().ConnectionString;
             var rabbitConnectionString = Configuration.GetSection("Rabbit").Get<RabbitConnectionConfiguration>().RabbitConnectionString;
+            var azureServiceBusConnectionConfiguration = Configuration.GetSection("Azure").Get<AzureServiceBusConnectionConfiguration>();
             // Health check            
             // - Add NuGet package: AspNetCore.HealthChecks.UI (Version 3.0.9)
             // - Add folder 'healthchecks' to project
@@ -60,7 +63,10 @@ namespace Service.Queue.API
                         .AddMongoDb(mongodbConnectionString: mongodbConnectionString,
                                     name: "mongo",
                                     failureStatus: HealthStatus.Unhealthy)
-                        .AddRabbitMQ(rabbitConnectionString: rabbitConnectionString);
+                        .AddRabbitMQ(rabbitConnectionString: rabbitConnectionString)
+                        .AddAzureServiceBusQueue(
+                                    azureServiceBusConnectionConfiguration.AzureServiceBusConnectionString,
+                                    azureServiceBusConnectionConfiguration.NameQueue);
 
             services.AddHealthChecksUI();
 
@@ -80,7 +86,19 @@ namespace Service.Queue.API
             services.AddTransient<IRequestHandler<GetLoggerByIdQuery, Logger>, GetLoggerByIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetLoggerByFilterQuery, DataCollection<Logger>>, GetLoggerByFilterQueryHandler>();
 
+            // AZURE
+            services.AddSingleton<IEventBus, AzureEventBus>(sp =>
+            {
+                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                var azureServiceBusConnectionConfiguration = Configuration.GetSection("Azure").Get<AzureServiceBusConnectionConfiguration>();
 
+                return new AzureEventBus(
+                    sp.GetService<IMediator>(),
+                    scopeFactory,
+                    azureServiceBusConnectionConfiguration);
+            });
+
+            // RABBIT
             services.AddSingleton<IEventBus, RabbitEventBus>(sp =>
             {
                 var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
@@ -91,8 +109,9 @@ namespace Service.Queue.API
                     scopeFactory,
                     rabbitConnectionConfiguration);
             });
-            services.AddTransient<EventLoggerHandler>();
 
+
+            services.AddTransient<EventLoggerHandler>();
             services.AddTransient<IEventHandler<LoggerEventQueue>, EventLoggerHandler>();
 
             services.AddSwaggerGen(s =>

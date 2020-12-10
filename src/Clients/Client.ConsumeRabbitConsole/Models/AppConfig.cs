@@ -1,4 +1,4 @@
-﻿using EventBus.Common.Configuration;
+﻿using EventBus.Rabbit.Configuration;
 
 namespace Client.ConsumeRabbitConsole.Models
 {
