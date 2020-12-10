@@ -86,18 +86,6 @@ namespace Service.Queue.API
             services.AddTransient<IRequestHandler<GetLoggerByIdQuery, Logger>, GetLoggerByIdQueryHandler>();
             services.AddTransient<IRequestHandler<GetLoggerByFilterQuery, DataCollection<Logger>>, GetLoggerByFilterQueryHandler>();
 
-            // AZURE
-            services.AddSingleton<IEventBus, AzureEventBus>(sp =>
-            {
-                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-                var azureServiceBusConnectionConfiguration = Configuration.GetSection("Azure").Get<AzureServiceBusConnectionConfiguration>();
-
-                return new AzureEventBus(
-                    sp.GetService<IMediator>(),
-                    scopeFactory,
-                    azureServiceBusConnectionConfiguration);
-            });
-
             // RABBIT
             services.AddSingleton<IEventBus, RabbitEventBus>(sp =>
             {
@@ -110,6 +98,17 @@ namespace Service.Queue.API
                     rabbitConnectionConfiguration);
             });
 
+            // AZURE
+            services.AddSingleton<IEventBus, AzureEventBus>(sp =>
+            {
+                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                var azureServiceBusConnectionConfiguration = Configuration.GetSection("Azure").Get<AzureServiceBusConnectionConfiguration>();
+
+                return new AzureEventBus(
+                    sp.GetService<IMediator>(),
+                    scopeFactory,
+                    azureServiceBusConnectionConfiguration);
+            });
 
             services.AddTransient<EventLoggerHandler>();
             services.AddTransient<IEventHandler<LoggerEventQueue>, EventLoggerHandler>();
