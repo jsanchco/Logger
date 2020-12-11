@@ -1,26 +1,44 @@
-version: '3'
+version: '3.4'
+
 services:
-    mongodb:
-        image: mongo
-        container_name: mongodb
-        volumes:
-            - mongodb:/data/db
-            - mongodb_config:/data/configdb
-        ports:
-            - 27017:27017
+  rabbitmq:
+      image: 'rabbitmq:3'
+      container_name: rabbitmq
+  
+  rabbitmq-web:
+      image: 'rabbitmq:3-management'
+      hostname: rabbitmq-web
+      container_name: rabbitmq-web
+      depends_on: 
+        - rabbitmq
+      ports:
+        - 5672:5672
+        - 15672:15672
+            
+  mongodb:
+      image: mongo
+      container_name: mongodb
+      volumes:
+        - mongodb:/data/db
+        - mongodb_config:/data/configdb
+      ports:
+        - 27017:27017
+      # environment:
+      #     MONGO_INITDB_ROOT_USERNAME: root
+      #     MONGO_INITDB_ROOT_PASSWORD: example
 
-    mongoclient:
-        image: mongoclient/mongoclient
-        container_name: mongoclient
-        depends_on:
-            - mongodb              
-        environment:
-            - MONGO_URL=mongodb://mongodb
-        volumes:
-            - mongoclient:/data/db
+  mongoclient:
+      image: mongoclient/mongoclient
+      container_name: mongoclient
+      depends_on:
+        - mongodb              
+      environment:
+        - MONGO_URL=mongodb://mongodb
+      volumes:
+        - mongoclient:/data/db
 
-        ports:
-            - '3000:3000'
+      ports:
+        - 3000:3000  
 
 volumes:
   mongodb:
